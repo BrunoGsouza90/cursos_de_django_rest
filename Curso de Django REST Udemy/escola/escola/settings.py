@@ -26,6 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Adição das bibliotecas do Django REST Framework.
+    'django_filters',
+    'rest_framework',
+
     'cursos',
 ]
 
@@ -105,13 +110,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+'''
+    Configuração das rotas de arquivos estáticos.
+'''
 STATIC_URL = 'static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+'''
+    Configuração das rotas de arquivos de mídia.
+'''
 MEDIA_URL = 'media/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+'''
+    Configuração do Autentificação e Autorização do REST Framework.
+'''
+REST_FRAMEWORK = {
+    
+    #   Estabelece por padrão a autentificação via sessão.
+    #   Aqui estabelecemos quem pode ter acesso.
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+
+    #  Estabelece por padrão a permissão via sessão.
+    # Aqui estabelecemos o que os clientes poderão fazer.
+    # Aqui determinamos em "ReadOnly" que o usuário poderá
+    #      ter acesso a apenas o método GET. Ele só poderá ler.
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    )
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
