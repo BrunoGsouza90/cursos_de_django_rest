@@ -1,0 +1,64 @@
+from django.db import models
+
+'''
+    Criação de uma Tabela no Banco de Dados.
+'''
+class Base(models.Model):
+
+    '''
+        auto_now_add = Definira uma única vez na criação a data
+            atual da criação.
+    '''
+    criacao = models.DateTimeField(auto_now_add=True)
+
+    '''
+        auto_now = A data será atualizada com a data atual da
+            atualização toda vez que o tópico for atualizado.
+    '''
+    atualizacao = models.DateTimeField(auto_now=True)
+    ativo = models.BooleanField(default=True)
+
+    '''
+        abstract = Ao ser True define que essa tabela não será
+            criada no Banco de Dados, porém poderá ser usado
+            como chave estrangeira por outros modelos.
+    '''
+    class Meta:
+        abstract = True
+
+class Curso(Base):
+    titulo = models.CharField(max_length=255)
+    url = models.URLField(unique=True)
+
+    class Meta:
+        verbose_name = 'Curso'
+        verbose_name_plural = 'Cursos'
+
+    def __str__(self):
+        return self.titulo
+
+class Avaliacao(models.Model):
+
+    '''
+        related_name = Define que será possível fazer mensão
+            dessa tabela na tabela "Curso".
+    '''
+    curso = models.ForeignKey(Curso, related_name='avaliacoes', on_delete=models.CASCADE)
+    nome = models.CharField(max_length=255)
+    email = models.EmailField()
+    comentario = models.TextField(blank=True, default='')
+    avaliacao = models.DecimalField(max_digits=2, decimal_places=1)
+
+    class Meta:
+        verbose_name = 'Avaliação'
+        verbose_name_plural = 'Avaliações'
+
+        '''
+            Determina que nessa tabela um "email" pode  ter apenas
+                um "curso" e vice versa.
+        '''
+        unique_together = ['email', 'curso']
+
+
+    def __str__(self):
+        return f'{self.nome} avaliou o curso {self.curso} com nota {self.avaliacao}'

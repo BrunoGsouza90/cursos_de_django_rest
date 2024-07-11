@@ -1,0 +1,7 @@
+{
+    "curso": 3,
+    "nome": "Bruno Gonçalves de Souza",
+    "comentario": "Bom!",
+    "avaliacao": "9.0",
+    "email": "bruno.gsouza187",
+}
