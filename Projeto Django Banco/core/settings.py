@@ -28,6 +28,19 @@ INSTALLED_APPS = [
     'users',
 ]
 
+'''
+    Por padrão o método User no Django vem assim. Utilizando a
+        própria instância de configuração da tabela "Users".
+    Não desejamos isso por isso o comentário no comando.
+'''
+#AUTH_USER_MODEL = 'django.contrib.auth.models.User'
+
+'''
+    Iremos utilizar a nossa própria classe "Users".
+    Agora será possível atuarmos o comando "makemigrations".
+'''
+AUTH_USER_MODEL = 'users.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
