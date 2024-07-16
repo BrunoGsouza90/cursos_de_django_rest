@@ -77,6 +77,16 @@ class CursoAPIView(APIView):
         request = Aonde é armazenado todos os dados da requisição.
         Note que ao estar online o formulário só aparecerá se ele
             estiver logado, assim como definimos em settings.py.
+
+            "settings.py" Linha 136-143.
+                #  Estabelece por padrão a permissão via sessão.
+                #  Aqui estabelecemos o que os clientes poderão fazer.
+                #  Aqui determinamos em "ReadOnly" que o usuário poderá
+                #      ter acesso a apenas o método GET se estiver offline
+                #       ( Usuário Anônimo ). Ele só poderá ler.
+                'DEFAULT_PERMISSION_CLASSES': (
+                    'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+                )
     '''
     def post(self, request):
 
@@ -89,7 +99,7 @@ class CursoAPIView(APIView):
         '''
             Verificando se os dados são válidos.
             raise_exception=True = Caso os dados não sejam válidos, será
-                enviado de volta uma excessão e paramos a função aqui.
+                enviado de volta uma excessão e parámos a função aqui.
         '''
         serializer.is_valid(raise_exception=True)
         
@@ -101,6 +111,16 @@ class CursoAPIView(APIView):
         '''
             Retornando os dados em formato JSON e retornando uma resposta
                 de sucesso de criação.
+            Podemos fazer o retorno como quisermos.
+
+            Emitindo respostas personalizadas:
+            return Response({"msg": "Criou com sucesso!"}, status=status.HTTP_201_CREATED)
+
+            De maneira padrão:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            Exibindo dados específicos serializados:
+            return Response({"id": serializer.data['id'], "Curso": serializer.data["titulo"]}, status=status.HTTP_201_CREATED)
         '''
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

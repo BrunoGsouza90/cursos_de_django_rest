@@ -123,7 +123,7 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 '''
-    Configuração do Autentificação e Autorização do REST Framework.
+    Configuração da Autentificação e Autorização do REST Framework.
 '''
 REST_FRAMEWORK = {
     
@@ -134,9 +134,10 @@ REST_FRAMEWORK = {
     ),
 
     #  Estabelece por padrão a permissão via sessão.
-    # Aqui estabelecemos o que os clientes poderão fazer.
-    # Aqui determinamos em "ReadOnly" que o usuário poderá
-    #      ter acesso a apenas o método GET. Ele só poderá ler.
+    #  Aqui estabelecemos o que os clientes poderão fazer.
+    #  Aqui determinamos em "ReadOnly" que o usuário poderá
+    #      ter acesso a apenas o método GET se estiver offline
+    #       ( Usuário Anônimo ). Ele só poderá ler.
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     )
