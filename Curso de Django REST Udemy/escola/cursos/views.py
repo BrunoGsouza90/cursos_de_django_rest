@@ -1,4 +1,10 @@
 '''
+    Importação da biblioteca de erro 404, onde será atuado quando um
+        objeto for inexistente.
+'''
+from django.shortcuts import get_object_or_404
+
+'''
     Importação da biblioteca Django REST Framework, que será responsabilizada
         por liberar classes genericas que facilitarão a criação das views.
 '''
@@ -49,6 +55,61 @@ class AvaliacoesAPIView(generics.ListCreateAPIView):
     queryset = Avaliacao.objects.all()
     serializer_class = AvaliacaoSerializer
 
+    '''
+        Criação de uma função irá sobrescrever todos os dados dessa
+            tabela no Banco de Dados que tem um relacionamento com
+            outra tabela em questão.
+    '''
+    def get_queryset(self):
+
+        '''
+            Aqui verificamos que se a avaliação tem algum relacionamento
+                com algum registro da tabela cujo existe o relacionamento.
+        '''
+        if self.kwargs.get('curso_pk'):
+
+            '''
+                Caso tenha um registro se relacionando, o valor será
+                    retornado.
+            '''
+            return self.queryset.filter(pk=self.kwargs.get('curso_pk'))
+        
+        '''
+            Caso não tenha um registro se relacionando, todos os valores dessa
+                tabela serão retornados.
+        '''
+        return self.queryset.all()
+
 class AvaliacaoAPIView(generics.RetrieveUpdateAPIView):
     queryset = Avaliacao.objects.all()
     serializer_class = AvaliacaoSerializer
+
+    '''
+        Criação de uma função que irá sobrescrever um dado único desta tabela
+            no Banco de Dados que tem um relacionamento com outra tabela
+            em questão.
+    '''
+    def get_object(self):
+
+        '''
+            Aqui verificamos se a avaliação tem algum relacionamento
+                com algum registro da tabela cujo existe o relacionamento.
+        '''
+        if self.kwargs.get('curso_pk'):
+
+            '''
+                Após pegar todos os cursos ( Linha 98 ), filtramos, tendo em
+                    mente que o curso_id seja o curso_pk, que é o relacionado
+                    a avaliação mencionada em questão no endpoint, e que está
+                    avaliação seja a avaliação específica do endpoint.
+                Caso não exista o erro 404 é mencionado. 
+            '''
+            return get_object_or_404(self.get_queryset(), 
+                                     curso_id=self.kwargs.get('curso_pk'), 
+                                     pk=self.kwargs.get('avaliacao_pk'))
+    
+        '''
+            Caso não tenha um registro se relacionando, todos os valores
+                dessa tabela serão retornados.
+        '''
+        return get_object_or_404(self.get_queryset(), pk=self.kwargs.get('avaliacao_pk'))

@@ -23,5 +23,12 @@ urlpatterns = [
     #   dos Identificadores Primários no Banco de Dados (Primary Key).
     # Aqui também trateremos o método PUT e DELETE em views.py .
     path('cursos/<int:pk>/', CursoAPIView.as_view(), name='curso'),
-    path('avaliacoes/<int:pk>/', AvaliacaoAPIView.as_view(), name='avaliacao'),
+    path('avaliacoes/<int:avaliacao_pk>/', AvaliacaoAPIView.as_view(), name='avaliacao'),
+
+    # Rotas genéricas responsavéis por listar um determinado dado de uma
+    #   tabela do Banco de Dados e os respectivos dados cujo ele tem
+    #   relacionamento em outra determinada tabela, de modo geral e único
+    #   também.
+    path('cursos/<int:curso_pk>/avaliacoes/', AvaliacoesAPIView.as_view(), name='curso_avaliacoes'),
+    path('cursos/<int:curso_pk>/avaliacoes/<int:avaliacao_pk>/', AvaliacaoAPIView.as_view(), name='curso_avaliacao'),
 ]

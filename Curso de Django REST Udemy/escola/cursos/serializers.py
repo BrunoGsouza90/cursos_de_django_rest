@@ -14,9 +14,15 @@ class AvaliacaoSerializer(serializers.ModelSerializer):
             diretamente de "Cursos", pois a tabela "Avaliação" tem
             um relacionamento com a tabela "Cursos". Fazemos isso
             para evitar conflitos.
+        Como os campos pertecem a outra tabela, precisamos também
+            indicar o termo "read_only=True", que indicará que esses
+            campos servem aqui nessa tabela apenas para visualização
+            (GET), e não podem sem alterados diretamente por aqui,
+            pois fazer parte de outra tabela, em específico a tabela
+            "Curso".
     '''
-    curso_criacao = serializers.DateTimeField(source='curso.criacao')
-    curso_ativo = serializers.BooleanField(source='curso.ativo')
+    curso_criacao = serializers.DateTimeField(source='curso.criacao', read_only=True)
+    curso_ativo = serializers.BooleanField(source='curso.ativo', read_only=True)
 
     class Meta:
 
