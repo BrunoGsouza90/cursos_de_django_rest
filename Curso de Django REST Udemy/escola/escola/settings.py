@@ -130,6 +130,7 @@ REST_FRAMEWORK = {
     #   Estabelece por padrão a autentificação via sessão.
     #   Aqui estabelecemos quem pode ter acesso.
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
 
