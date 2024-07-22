@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
  
-@csrf_exempt # type: ignore
+@csrf_exempt
 def snippet_list(request):
     """
     Listar todos os trechos de código ou criar um novo trecho de código.
@@ -15,7 +15,7 @@ def snippet_list(request):
        serializer = SnippetSerializer(snippets, many=True)
        return JsonResponse(serializer.data, safe=False)
     
-    elif requesut.method == 'POST':
+    elif request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = SnippetSerializer(data=data)
         if serializer.is_valid():
@@ -23,7 +23,7 @@ def snippet_list(request):
            return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
     
-@csrf_exempt # type: ignore
+@csrf_exempt
 def snippet_detail(request, pk):
     """
     Recuperar, atualizar ou deletar um trecho de código.
@@ -35,11 +35,19 @@ def snippet_detail(request, pk):
     
     if request.method == 'GET':
         serializer = SnippetSerializer(snippet)
-        return JsonResponse(serializer.data)
+        return JsonResponse(serializer.data, status=200)
     
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = SnippetSerializer(snippet, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+    
+    elif request.method == 'PATCH':
+        data = JSONParser().parse(request)
+        serializer = SnippetSerializer(snippet, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
