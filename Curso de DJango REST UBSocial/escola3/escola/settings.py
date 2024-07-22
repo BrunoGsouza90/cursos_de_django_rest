@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'escola_cursos',
     'rest_framework',
+    'rest_framework.authtoken', #   Autentificação via Token.
 ]
 
 MIDDLEWARE = [
@@ -82,3 +83,19 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        #   Autentificação via Token.
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES':(
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2,
+}
+
+#   admin = 'Token 2da3a4faf83eb09f27bac0e89f7322f747790c9b'
+#   Bruno = 'Token d49c90df6d04e7d224b86a0e3f6f03fc4a493d91'
+#   Lucas = 'Token 8576218cca98b5edb25010236bf95de3b3b33466'

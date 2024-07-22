@@ -3,7 +3,7 @@ from .views import CursosAPIView, CursoAPIView, AvaliacoesAPIView, AvaliacaoAPIV
 
 urlpatterns = [
     path('cursos/', CursosAPIView.as_view(), name='cursos'),
-    path('cursos/<int:pk>', CursoAPIView.as_view(), name='curso'),
+    path('cursos/<int:pk>/', CursoAPIView.as_view(), name='curso'),
     path('avaliacoes/', AvaliacoesAPIView.as_view(), name='avaliacoes'),
-    path('avaliacoes/<int:pk>', AvaliacaoAPIView.as_view(), name='avaliacao'),
+    path('avaliacoes/<int:pk>/', AvaliacaoAPIView.as_view(), name='avaliacao'),
 ]
