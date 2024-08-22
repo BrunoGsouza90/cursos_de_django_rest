@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'escola_cursos',
     'rest_framework',
+    'rest_framework.authtoken', #   Autentificação via Token.
 ]
 
 MIDDLEWARE = [
@@ -85,12 +86,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        #   Autentificação via Token.
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES':(
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 2,
+    'PAGE_SIZE': 15,
+
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '2/minute', # seconde, day, month, years.
+        'user': '3/minute'
+    }
 }
 
+#   admin = 'Token 2da3a4faf83eb09f27bac0e89f7322f747790c9b'
+#   Bruno = 'Token d49c90df6d04e7d224b86a0e3f6f03fc4a493d91'
+#   Lucas = 'Token 8576218cca98b5edb25010236bf95de3b3b33466'
+#   ubsocial = 'Token 526c9cb8de1d53e12eab089263aac3326aae276a'
+#   Raiani = 'Token 0e179f51e8566a207e019fdfbbb4b73ea032299b'

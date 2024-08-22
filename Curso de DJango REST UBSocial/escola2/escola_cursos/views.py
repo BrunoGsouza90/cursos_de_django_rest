@@ -3,13 +3,18 @@ from .serializers import CursoSerializer, AvaliacaoSerializer
 from rest_framework import viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .permissions import EhSuperUsuario
+from rest_framework import permissions
 
-
-# ==================== API V2 ====================
 
 class CursoViewSet(viewsets.ModelViewSet):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
+
+    #Permissions:
+    #permission_classes = [IsAuthenticated]
+    permission_classes = (EhSuperUsuario, permissions.DjangoModelPermissions,)
 
     @action(detail=True, methods=['get', 'post', 'put', 'delete', 'patch'])
     def avaliacoes(self, request, pk=None):
